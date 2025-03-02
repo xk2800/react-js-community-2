@@ -1,14 +1,24 @@
 import { useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store/rootReducer'
 import { fetchRepositoryById } from '../features/repositories/repositoriesSlice'
 import LoadingIndicator from './LoadingIndicator'
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
+import { Button } from './ui/button'
+import { MoveLeft } from 'lucide-react'
+import { motion } from 'framer-motion'
+import RepositoryStatCard from './RepositoryStatCard'
+import EyeEmoji from './emoji/EyeEmoji'
+import StarEmoji from './emoji/StarEmoji'
+import ForkEmoji from './emoji/ForkEmoji'
+import LanguageEmoji from './emoji/LanguageEmoji'
 
 const RepoDetail = () => {
   const { repoId } = useParams<{ repoId: string }>()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const { selectedRepository, loading, error } = useSelector(
     (state: RootState) => state.repositories
   )
@@ -63,52 +73,80 @@ const RepoDetail = () => {
   // Display repository details
   return (
     <div>
-      <button
-        onClick={handleBack}
-        className="mb-4 text-blue-600 hover:text-blue-800 font-medium"
+      <motion.div
+        whileHover="hover"
+        className="inline-flex items-center gap-2 mb-4"
       >
-        ← Back to repositories
-      </button>
-
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">{selectedRepository.name}</h2>
-
-        <p className="text-gray-600 mb-6">
-          {selectedRepository.description || 'No description available'}
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Stars</p>
-            <p className="text-xl font-semibold">{selectedRepository.stargazers_count}</p>
-          </div>
-
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Forks</p>
-            <p className="text-xl font-semibold">{selectedRepository.forks_count}</p>
-          </div>
-
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Watchers</p>
-            <p className="text-xl font-semibold">{selectedRepository.watchers_count}</p>
-          </div>
-
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm text-gray-500">Language</p>
-            <p className="text-xl font-semibold">{selectedRepository.language || 'Unknown'}</p>
-          </div>
-        </div>
-
-        <div className="border-t pt-4">
-          <a
-            href={selectedRepository.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition-colors"
+        <Button variant="link" onClick={handleBack} className="flex items-center gap-2 pl-2 transition-all duration-300 ease-in-out cursor-pointer hover:no-underline text-rose-500 hover:text-white">
+          <motion.div
+            variants={{ hover: { x: -5 } }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
-            View on GitHub
-          </a>
-        </div>
+            <MoveLeft />
+          </motion.div>
+          Back to repositories
+        </Button>
+      </motion.div>
+
+      <Card className='mb-4'>
+        <CardHeader>
+          <CardTitle>
+            {selectedRepository.name}
+          </CardTitle>
+          <CardDescription>
+            {selectedRepository.description || 'No description available'}
+          </CardDescription>
+        </CardHeader>
+        <CardFooter>
+          <Button className='border-1 border-rose-500 hover:bg-rose-500 hover:border-white transition-all duration-300 ease-in-out cursor-pointer'>
+            <Link
+              to={selectedRepository.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on GitHub
+            </Link>
+          </Button>
+        </CardFooter>
+      </Card>
+
+      <div className='grid grid-cols-4 gap-4'>
+        <RepositoryStatCard
+          title={(isHovered) => (
+            <>
+              <StarEmoji isHovered={isHovered} /> Stars
+            </>
+          )}
+          value={selectedRepository.stargazers_count}
+        />
+
+        <RepositoryStatCard
+          title={(isHovered) => (
+            <>
+              <EyeEmoji isHovered={isHovered} /> Watchers
+            </>
+          )}
+          value={selectedRepository.watchers_count}
+        />
+
+        <RepositoryStatCard
+          title={(isHovered) => (
+            <>
+              <ForkEmoji isHovered={isHovered} /> Forks
+            </>
+          )}
+          value={selectedRepository.forks_count}
+        />
+
+        <RepositoryStatCard
+          title={(isHovered) => (
+            <>
+              <LanguageEmoji isHovered={isHovered} /> Language
+            </>
+          )}
+          value={selectedRepository.language || 'No Language available'}
+        // className='max-md:col-span-2'
+        />
       </div>
     </div>
   )
