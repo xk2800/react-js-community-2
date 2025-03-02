@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { fetchRepositories, loadMoreRepositories } from '../features/repositories/repositoriesSlice'
 import { RootState } from '../store/rootReducer'
 import RepoCard from './RepoCard'
@@ -7,11 +8,8 @@ import LoadingIndicator from './LoadingIndicator'
 import { Repository } from '../types/types'
 import SearchBar from './SearchBar'
 
-interface RepoListProps {
-  onRepoSelect: (repo: Repository) => void
-}
-
-const RepoList = ({ onRepoSelect }: RepoListProps) => {
+const RepoList = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const {
     repositories,
@@ -23,29 +21,29 @@ const RepoList = ({ onRepoSelect }: RepoListProps) => {
 
   const observer = useRef<IntersectionObserver | null>(null)
   const lastRepoElementRef = useCallback((node: HTMLDivElement | null) => {
-    // Skip if loading or no more repos to load
     if (loading || !hasMore) return
 
-    // Disconnect previous observer if it exists
     if (observer.current) observer.current.disconnect()
 
-    // Create new observer for infinite scrolling
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         dispatch(loadMoreRepositories())
       }
     })
 
-    // Observe the last element
     if (node) observer.current.observe(node)
   }, [loading, hasMore, dispatch])
+
+  // Navigate to repository detail page
+  const handleRepoSelect = (repo: Repository) => {
+    navigate(`/repo/${repo.id}`)
+  }
 
   // Initial load of repositories
   useEffect(() => {
     dispatch(fetchRepositories())
   }, [dispatch])
 
-  // If there's an error, display it
   if (error) {
     return (
       <div className="text-center py-10">
@@ -63,14 +61,13 @@ const RepoList = ({ onRepoSelect }: RepoListProps) => {
   return (
     <div>
       <SearchBar />
-      {/* Show search results indication if searching */}
+
       {searchTerm && (
         <h2 className="text-xl font-semibold mb-4">
           Search results for: "{searchTerm}"
         </h2>
       )}
 
-      {/* Show empty state if no repositories */}
       {repositories.length === 0 && !loading ? (
         <div className="text-center py-10">
           <p className="text-gray-500">No repositories found</p>
@@ -78,13 +75,12 @@ const RepoList = ({ onRepoSelect }: RepoListProps) => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {repositories.map((repo, index) => {
-            // Apply ref to last element for infinite scrolling
             if (repositories.length === index + 1) {
               return (
                 <div ref={lastRepoElementRef} key={repo.id}>
                   <RepoCard
                     repo={repo}
-                    onClick={() => onRepoSelect(repo)}
+                    onClick={() => handleRepoSelect(repo)}
                     counter={index + 1}
                   />
                 </div>
@@ -94,7 +90,7 @@ const RepoList = ({ onRepoSelect }: RepoListProps) => {
                 <RepoCard
                   key={repo.id}
                   repo={repo}
-                  onClick={() => onRepoSelect(repo)}
+                  onClick={() => handleRepoSelect(repo)}
                   counter={index + 1}
                 />
               )
@@ -103,7 +99,6 @@ const RepoList = ({ onRepoSelect }: RepoListProps) => {
         </div>
       )}
 
-      {/* Loading indicator */}
       {loading && <LoadingIndicator />}
     </div>
   )

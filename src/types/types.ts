@@ -15,6 +15,7 @@ export interface Repository {
 
 export interface RepositoriesState {
   repositories: Repository[]
+  selectedRepository: Repository | null
   loading: boolean
   error: string | null
   page: number

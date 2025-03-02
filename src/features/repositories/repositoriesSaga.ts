@@ -6,69 +6,80 @@ import {
   loadMoreRepositories,
   loadMoreRepositoriesSuccess,
   searchRepositories,
-  searchRepositoriesSuccess
+  searchRepositoriesSuccess,
+  fetchRepositoryById,
+  fetchRepositoryByIdSuccess,
+  fetchRepositoryByIdFailure
 } from './repositoriesSlice'
-import { fetchRepositoriesByOrg, searchRepositoriesByName } from './repositoriesAPI'
+import {
+  fetchRepositoriesByOrg,
+  searchRepositoriesByName,
+  fetchRepositoryById as fetchRepositoryByIdAPI
+} from './repositoriesAPI'
 import { RootState } from '../../store/rootReducer'
 import { Repository } from '../../types/types'
+import { Effect } from 'redux-saga/effects'
 
-// Worker saga for fetching repositories
-function* fetchRepositoriesSaga() {
+function* fetchRepositoriesSaga(): Generator<Effect, void, Repository[]> {
   try {
-    // Call API to fetch repositories
     const repositories: Repository[] = yield call(fetchRepositoriesByOrg)
-    // Dispatch success action with fetched repositories
     yield put(fetchRepositoriesSuccess(repositories))
   } catch (error) {
-    // Dispatch failure action with error message
     yield put(fetchRepositoriesFailure((error as Error).message))
   }
 }
 
-// Worker saga for loading more repositories
-function* loadMoreRepositoriesSaga() {
+function* loadMoreRepositoriesSaga(): Generator<Effect, void> {
   try {
-    // Get current page and search term from state
     const { page, searchTerm } = yield select((state: RootState) => state.repositories)
 
     let repositories: Repository[]
 
     if (searchTerm) {
-      // If searching, load more search results
       repositories = yield call(searchRepositoriesByName, searchTerm, page)
     } else {
-      // Otherwise load more regular repositories
       repositories = yield call(fetchRepositoriesByOrg, 'reactjs', page)
     }
 
-    // Dispatch success action with fetched repositories
     yield put(loadMoreRepositoriesSuccess(repositories))
   } catch (error) {
-    // Dispatch failure action with error message
     yield put(fetchRepositoriesFailure((error as Error).message))
   }
 }
 
-// Worker saga for searching repositories
-function* searchRepositoriesSaga(action: ReturnType<typeof searchRepositories>) {
+function* searchRepositoriesSaga(action: ReturnType<typeof searchRepositories>): Generator<Effect, void> {
   try {
-    // Call API to search repositories
     const repositories: Repository[] = yield call(
       searchRepositoriesByName,
       action.payload
     )
-    // Dispatch success action with search results
     yield put(searchRepositoriesSuccess(repositories))
   } catch (error) {
-    // Dispatch failure action with error message
     yield put(fetchRepositoriesFailure((error as Error).message))
   }
 }
 
-// Watcher saga
-export function* repositoriesSaga() {
-  // Watch for these actions and call the corresponding saga
+// New saga for fetching a repository by ID
+function* fetchRepositoryByIdSaga(action: ReturnType<typeof fetchRepositoryById>): Generator<Effect, void> {
+  try {
+    // First, check if the repository is already in the state
+    const { repositories } = yield select((state: RootState) => state.repositories)
+    let repo: Repository | undefined = repositories.find((r: Repository) => r.id === action.payload)
+
+    // If not found in state, fetch from API
+    if (!repo) {
+      repo = yield call(fetchRepositoryByIdAPI, action.payload)
+    }
+
+    yield put(fetchRepositoryByIdSuccess(repo))
+  } catch (error) {
+    yield put(fetchRepositoryByIdFailure((error as Error).message))
+  }
+}
+
+export function* repositoriesSaga(): Generator<Effect, void> {
   yield takeLatest(fetchRepositories.type, fetchRepositoriesSaga)
   yield takeLatest(loadMoreRepositories.type, loadMoreRepositoriesSaga)
   yield takeLatest(searchRepositories.type, searchRepositoriesSaga)
+  yield takeLatest(fetchRepositoryById.type, fetchRepositoryByIdSaga)
 }

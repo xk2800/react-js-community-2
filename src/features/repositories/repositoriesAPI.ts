@@ -57,3 +57,28 @@ export const searchRepositoriesByName = async (
     throw error
   }
 }
+
+// To fetch a single repository by ID
+export const fetchRepositoryById = async (id: number) => {
+  try {
+    // First, try to find the repo in the reactjs org
+    const allRepos = await fetchRepositoriesByOrg('reactjs', 1, 100)
+    const foundRepo = allRepos.find(repo => repo.id === id)
+
+    if (foundRepo) {
+      return foundRepo
+    }
+
+    // If not found in the first 100, try a direct fetch by ID
+    // This assumes we know the repo's full_name (owner/repo)
+    // GitHub API doesn't allow fetching directly by ID, so we'll need to look it up
+
+    // For demo purposes, we'll throw an error if not found in the first 100
+    throw new Error('Repository not found')
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch repository')
+    }
+    throw error
+  }
+}

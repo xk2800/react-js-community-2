@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Repository, RepositoriesState } from '../../types/types'
 
-// Initial state for repositories
 const initialState: RepositoriesState = {
   repositories: [],
+  selectedRepository: null,
   loading: false,
   error: null,
   page: 1,
@@ -11,46 +11,38 @@ const initialState: RepositoriesState = {
   searchTerm: ''
 }
 
-// Create repository slice
 const repositoriesSlice = createSlice({
   name: 'repositories',
   initialState,
   reducers: {
-    // Action to initiate repository fetching
     fetchRepositories: (state) => {
       state.loading = true
       state.error = null
-      // Reset if this is a new fetch (not loading more)
       state.repositories = []
       state.page = 1
       state.hasMore = true
       state.searchTerm = ''
     },
-    // Action when repositories are successfully fetched
     fetchRepositoriesSuccess: (state, action: PayloadAction<Repository[]>) => {
       state.repositories = action.payload
       state.loading = false
-      state.hasMore = action.payload.length === 30 // If we got less than requested, no more pages
+      state.hasMore = action.payload.length === 30
     },
-    // Action when repository fetching fails
     fetchRepositoriesFailure: (state, action: PayloadAction<string>) => {
       state.loading = false
       state.error = action.payload
     },
-    // Action to load more repositories (for infinite scrolling)
     loadMoreRepositories: (state) => {
       if (state.hasMore && !state.loading) {
         state.loading = true
         state.page += 1
       }
     },
-    // Action when more repositories are successfully loaded
     loadMoreRepositoriesSuccess: (state, action: PayloadAction<Repository[]>) => {
       state.repositories = [...state.repositories, ...action.payload]
       state.loading = false
-      state.hasMore = action.payload.length === 30 // If we got less than requested, no more pages
+      state.hasMore = action.payload.length === 30
     },
-    // Action to initiate repository search
     searchRepositories: (state, action: PayloadAction<string>) => {
       state.loading = true
       state.error = null
@@ -59,16 +51,28 @@ const repositoriesSlice = createSlice({
       state.hasMore = true
       state.searchTerm = action.payload
     },
-    // Action when search results are successfully fetched
     searchRepositoriesSuccess: (state, action: PayloadAction<Repository[]>) => {
       state.repositories = action.payload
       state.loading = false
-      state.hasMore = action.payload.length === 30 // If we got less than requested, no more pages
+      state.hasMore = action.payload.length === 30
+    },
+    // New actions for fetching a single repository by ID
+    fetchRepositoryById: (state) => {
+      state.loading = true
+      state.error = null
+      state.selectedRepository = null
+    },
+    fetchRepositoryByIdSuccess: (state, action: PayloadAction<Repository>) => {
+      state.selectedRepository = action.payload
+      state.loading = false
+    },
+    fetchRepositoryByIdFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false
+      state.error = action.payload
     }
   }
 })
 
-// Export actions
 export const {
   fetchRepositories,
   fetchRepositoriesSuccess,
@@ -76,8 +80,10 @@ export const {
   loadMoreRepositories,
   loadMoreRepositoriesSuccess,
   searchRepositories,
-  searchRepositoriesSuccess
+  searchRepositoriesSuccess,
+  fetchRepositoryById,
+  fetchRepositoryByIdSuccess,
+  fetchRepositoryByIdFailure
 } = repositoriesSlice.actions
 
-// Export reducer
 export default repositoriesSlice.reducer

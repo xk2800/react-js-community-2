@@ -2,7 +2,7 @@ import { Repository } from '../types/types'
 
 interface RepoCardProps {
   repo: Repository
-  counter: string
+  counter: number
   onClick: () => void
 }
 
