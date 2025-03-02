@@ -57,10 +57,13 @@ const repositoriesSlice = createSlice({
       state.hasMore = action.payload.length === 30
     },
     // New actions for fetching a single repository by ID
-    fetchRepositoryById: (state) => {
+    // fetchRepositoryById: (state) => {
+    fetchRepositoryById: (state, action: PayloadAction<number>) => {
       state.loading = true
       state.error = null
       state.selectedRepository = null
+      // Store the repository ID for reference
+      state.selectedRepository = { id: action.payload } as Repository
     },
     fetchRepositoryByIdSuccess: (state, action: PayloadAction<Repository>) => {
       state.selectedRepository = action.payload
