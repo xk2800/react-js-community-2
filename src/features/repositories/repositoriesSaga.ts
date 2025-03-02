@@ -71,6 +71,10 @@ function* fetchRepositoryByIdSaga(action: ReturnType<typeof fetchRepositoryById>
       repo = yield call(fetchRepositoryByIdAPI, action.payload)
     }
 
+    if (!repo) {
+      throw new Error('Repository not found')
+    }
+
     yield put(fetchRepositoryByIdSuccess(repo))
   } catch (error) {
     yield put(fetchRepositoryByIdFailure((error as Error).message))
