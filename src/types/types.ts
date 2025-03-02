@@ -5,6 +5,7 @@ export interface Repository {
   html_url: string
   homepage: string
   language: string | null
+  created_at: string
   stargazers_count: number
   forks_count: number
   watchers_count: number

@@ -95,7 +95,7 @@ const RepoDetail = () => {
             {selectedRepository.name}
           </CardTitle>
           <CardDescription className='text-lg'>
-            {selectedRepository.description || 'No description available'}
+            {selectedRepository.description || "We've looked high and low, unfortunately it looks like there is no description."}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -134,7 +134,7 @@ const RepoDetail = () => {
               <LanguageEmoji isHovered={isHovered} /> Language
             </>
           )}
-          value={selectedRepository.language || 'No Language available'}
+          value={selectedRepository.language || 'Opps, I think think there is no language for this'}
         // className='max-md:col-span-2'
         />
       </div>
