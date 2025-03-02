@@ -22,7 +22,7 @@ const RepositoryStatCard: React.FC<RepositoryStatCardProps> = ({ title, value, c
           {typeof title === "function" ? title(isHovered) : title}
         </CardTitle>
       </CardHeader>
-      <CardContent>{value}</CardContent>
+      <CardContent className="font-semibold text-xl">{value}</CardContent>
     </Card>
   );
 };

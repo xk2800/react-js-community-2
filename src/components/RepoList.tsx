@@ -70,7 +70,7 @@ const RepoList = () => {
 
       {repositories.length === 0 && !loading ? (
         <div className="text-center py-10">
-          <p className="text-gray-500">No repositories found</p>
+          <p className="text-gray-300">No repositories found</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -69,11 +69,7 @@ export const fetchRepositoryById = async (id: number) => {
       return foundRepo
     }
 
-    // If not found in the first 100, try a direct fetch by ID
-    // This assumes we know the repo's full_name (owner/repo)
-    // GitHub API doesn't allow fetching directly by ID, so we'll need to look it up
-
-    // For demo purposes, we'll throw an error if not found in the first 100
+    // We'll throw an error if not found in the first 100
     throw new Error('Repository not found')
   } catch (error) {
     if (axios.isAxiosError(error)) {

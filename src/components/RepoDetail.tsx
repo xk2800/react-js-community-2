@@ -13,6 +13,7 @@ import EyeEmoji from './emoji/EyeEmoji'
 import StarEmoji from './emoji/StarEmoji'
 import ForkEmoji from './emoji/ForkEmoji'
 import LanguageEmoji from './emoji/LanguageEmoji'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
 
 const RepoDetail = () => {
   const { repoId } = useParams<{ repoId: string }>()
@@ -77,7 +78,7 @@ const RepoDetail = () => {
         whileHover="hover"
         className="inline-flex items-center gap-2 mb-4"
       >
-        <Button variant="link" onClick={handleBack} className="flex items-center gap-2 pl-2 transition-all duration-300 ease-in-out cursor-pointer hover:no-underline text-rose-500 hover:text-white">
+        <Button variant="link" onClick={handleBack} className="flex items-center gap-2 pl-2 transition-all duration-300 ease-in-out cursor-pointer hover:no-underline text-[#49f627] hover:text-white">
           <motion.div
             variants={{ hover: { x: -5 } }}
             transition={{ type: "spring", stiffness: 300 }}
@@ -88,29 +89,18 @@ const RepoDetail = () => {
         </Button>
       </motion.div>
 
-      <Card className='mb-4'>
-        <CardHeader>
-          <CardTitle>
+      <Card className='mb-4 border-none'>
+        <CardHeader className='p-0'>
+          <CardTitle className='text-2xl'>
             {selectedRepository.name}
           </CardTitle>
-          <CardDescription>
+          <CardDescription className='text-lg'>
             {selectedRepository.description || 'No description available'}
           </CardDescription>
         </CardHeader>
-        <CardFooter>
-          <Button className='border-1 border-rose-500 hover:bg-rose-500 hover:border-white transition-all duration-300 ease-in-out cursor-pointer'>
-            <Link
-              to={selectedRepository.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </Link>
-          </Button>
-        </CardFooter>
       </Card>
 
-      <div className='grid grid-cols-4 gap-4'>
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
         <RepositoryStatCard
           title={(isHovered) => (
             <>
@@ -148,6 +138,67 @@ const RepoDetail = () => {
         // className='max-md:col-span-2'
         />
       </div>
+
+      <Card className='mt-4'>
+        <CardHeader>
+          <CardTitle>
+            Like clicking buttons?
+          </CardTitle>
+          <CardDescription>
+            Try clicking on a button to be transported to another website!
+            <p className='text-xs'>psssss....But why would you even want to leave this cool website?</p>
+          </CardDescription>
+        </CardHeader>
+        <CardFooter className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4'>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span>
+                  <Button className="border-1 border-[#49f627] hover:bg-[#49f627] hover:border-black hover:text-black transition-all duration-300 ease-in-out cursor-pointer w-full h-full">
+                    <Link
+                      to={selectedRepository.html_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className='text-wrap'
+                    >
+                      View on GitHub
+                    </Link>
+                  </Button>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent className='text-[#49f627]'>
+                <p>Leaving so soon?</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+
+          {selectedRepository.homepage && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span>
+                    <Button className="border-1 border-[#49f627] hover:bg-[#49f627] hover:border-black hover:text-black transition-all duration-300 ease-in-out cursor-pointer w-full h-full">
+                      <Link
+                        to={selectedRepository.homepage}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className='text-wrap'
+                      >
+                        View the website
+                      </Link>
+                    </Button>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent className='text-[#49f627]'>
+                  <p>Leaving so soon?</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+
+        </CardFooter>
+      </Card>
     </div>
   )
 }

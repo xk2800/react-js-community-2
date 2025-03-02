@@ -32,7 +32,7 @@ const SearchBar = () => {
           placeholder="Enter your search term"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className=""
+          className="focus-visible:ring-[#49f627]"
         />
       </div>
     </form>
