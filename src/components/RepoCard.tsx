@@ -2,15 +2,17 @@ import { Repository } from '../types/types'
 
 interface RepoCardProps {
   repo: Repository
+  counter: string
   onClick: () => void
 }
 
-const RepoCard = ({ repo, onClick }: RepoCardProps) => {
+const RepoCard = ({ repo, onClick, counter }: RepoCardProps) => {
   return (
     <div
       className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
       onClick={onClick}
     >
+      {counter}
       <h3 className="text-lg font-semibold text-blue-600 mb-2 truncate">
         {repo.name}
       </h3>

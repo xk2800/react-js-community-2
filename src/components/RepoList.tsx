@@ -82,7 +82,11 @@ const RepoList = ({ onRepoSelect }: RepoListProps) => {
             if (repositories.length === index + 1) {
               return (
                 <div ref={lastRepoElementRef} key={repo.id}>
-                  <RepoCard repo={repo} onClick={() => onRepoSelect(repo)} />
+                  <RepoCard
+                    repo={repo}
+                    onClick={() => onRepoSelect(repo)}
+                    counter={index + 1}
+                  />
                 </div>
               )
             } else {
@@ -91,6 +95,7 @@ const RepoList = ({ onRepoSelect }: RepoListProps) => {
                   key={repo.id}
                   repo={repo}
                   onClick={() => onRepoSelect(repo)}
+                  counter={index + 1}
                 />
               )
             }
