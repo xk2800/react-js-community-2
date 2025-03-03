@@ -1,3 +1,5 @@
+import { ReactNode } from "react"
+
 export interface Repository {
   id: number
   name: string
@@ -23,4 +25,21 @@ export interface RepositoriesState {
   page: number
   hasMore: boolean
   searchTerm: string
+}
+
+export interface SelectedRepository {
+  html_url: string;
+  homepage?: string;
+}
+
+export interface RepoCardProps {
+  repo: Repository
+  counter: number
+  onClick: () => void
+}
+
+export interface RepositoryStatCardProps {
+  title: ReactNode | ((isHovered: boolean) => ReactNode)
+  value: string | number
+  className?: string
 }

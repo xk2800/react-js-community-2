@@ -1,12 +1,8 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { RepositoryStatCardProps } from "@/types/types";
 // import { cn } from "@/lib/utils";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 
-interface RepositoryStatCardProps {
-  title: ReactNode | ((isHovered: boolean) => ReactNode)
-  value: string | number
-  className?: string
-}
 
 const RepositoryStatCard: React.FC<RepositoryStatCardProps> = ({ title, value, className }) => {
   const [isHovered, setIsHovered] = useState(false);

@@ -1,4 +1,4 @@
-import { Repository } from '../types/types'
+import { RepoCardProps, Repository } from '../types/types'
 import {
   Card,
   CardContent,
@@ -10,12 +10,6 @@ import {
 } from "@/components/ui/card"
 import { parseISO, format } from 'date-fns'
 
-
-interface RepoCardProps {
-  repo: Repository
-  counter: number
-  onClick: () => void
-}
 
 const RepoCard = ({ repo, onClick, counter }: RepoCardProps) => {
 

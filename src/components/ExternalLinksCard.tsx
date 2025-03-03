@@ -3,13 +3,10 @@ import { Button } from "./ui/button";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 import { ExternalLink } from "lucide-react";
+import { SelectedRepository } from "@/types/types";
 
-interface Repository {
-  html_url: string;
-  homepage?: string;
-}
 
-const ExternalLinkCard = ({ selectedRepository }: { selectedRepository: Repository }) => {
+const ExternalLinkCard = ({ selectedRepository }: { selectedRepository: SelectedRepository }) => {
   const handleExternalLink = (url: string) => {
     // For external URLs, open in a new tab
     window.open(url, '_blank', 'noopener,noreferrer');
