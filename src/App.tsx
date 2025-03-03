@@ -16,7 +16,7 @@ const App = () => {
           <Route path='/repo/:repoId' element={<RepoDetail />} />
 
           {/* 404 page */}
-          <Route path='*' element={<h1>Not Found</h1>} />
+          {/* <Route path='*' element={<h1>Not Found</h1>} /> */}
         </Routes>
       </main>
     </div>
