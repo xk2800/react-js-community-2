@@ -2,6 +2,7 @@ import Header from './components/Header'
 import RepoList from './components/RepoList'
 import RepoDetail from './components/RepoDetail'
 import { Route, Routes } from 'react-router-dom'
+import NotFound from './pages/NotFound'
 
 const App = () => {
   // State to track which repository is currently selected for detail view
@@ -16,7 +17,7 @@ const App = () => {
           <Route path='/repo/:repoId' element={<RepoDetail />} />
 
           {/* 404 page */}
-          {/* <Route path='*' element={<h1>Not Found</h1>} /> */}
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </main>
     </div>
