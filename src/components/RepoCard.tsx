@@ -1,4 +1,4 @@
-import { RepoCardProps, Repository } from '../types/types'
+import { RepoCardProps } from '../types/types'
 import {
   Card,
   CardContent,
