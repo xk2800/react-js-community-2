@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../store/rootReducer'
 import { fetchRepositoryById } from '../features/repositories/repositoriesSlice'
 import LoadingIndicator from './LoadingIndicator'
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import { MoveLeft } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -13,7 +13,7 @@ import EyeEmoji from './emoji/EyeEmoji'
 import StarEmoji from './emoji/StarEmoji'
 import ForkEmoji from './emoji/ForkEmoji'
 import LanguageEmoji from './emoji/LanguageEmoji'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip'
+import ExternalLinkCard from './ExternalLinksCard'
 
 const RepoDetail = () => {
   const { repoId } = useParams<{ repoId: string }>()
@@ -139,66 +139,7 @@ const RepoDetail = () => {
         />
       </div>
 
-      <Card className='mt-4'>
-        <CardHeader>
-          <CardTitle>
-            Like clicking buttons?
-          </CardTitle>
-          <CardDescription>
-            Try clicking on a button to be transported to another website!
-            <p className='text-xs'>psssss....But why would you even want to leave this cool website?</p>
-          </CardDescription>
-        </CardHeader>
-        <CardFooter className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4'>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span>
-                  <Button className="border-1 border-[#49f627] hover:bg-[#49f627] hover:border-black hover:text-black transition-all duration-300 ease-in-out cursor-pointer w-full h-full">
-                    <Link
-                      to={selectedRepository.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className='text-wrap'
-                    >
-                      View on GitHub
-                    </Link>
-                  </Button>
-                </span>
-              </TooltipTrigger>
-              <TooltipContent className='text-[#49f627]'>
-                <p>Leaving so soon?</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-
-          {selectedRepository.homepage && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span>
-                    <Button className="border-1 border-[#49f627] hover:bg-[#49f627] hover:border-black hover:text-black transition-all duration-300 ease-in-out cursor-pointer w-full h-full">
-                      <Link
-                        to={selectedRepository.homepage}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className='text-wrap'
-                      >
-                        View the website
-                      </Link>
-                    </Button>
-                  </span>
-                </TooltipTrigger>
-                <TooltipContent className='text-[#49f627]'>
-                  <p>Leaving so soon?</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-
-        </CardFooter>
-      </Card>
+      <ExternalLinkCard selectedRepository={selectedRepository} />
     </div>
   )
 }
