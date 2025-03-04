@@ -1,9 +1,13 @@
+import { Link } from "react-router-dom"
+
 const Header = () => {
   return (
-    <header className="shadow-md py-4">
-      <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+    <header className="fixed bg-background top-0 w-full z-50">
+      <div className="relative flex flex-col md:flex-row justify-between items-center p-4">
         <h1 className="text-2xl font-bold">
-          React Community Repositories
+          <Link to={'/'}>
+            React Community Repositories
+          </Link>
         </h1>
       </div>
     </header>

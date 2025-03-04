@@ -1,5 +1,5 @@
 import Header from './components/Header'
-import RepoList from './components/RepoList'
+import RepoList from './pages/RepoList'
 import RepoDetail from './components/RepoDetail'
 import { Route, Routes } from 'react-router-dom'
 import NotFound from './pages/NotFound'
@@ -8,9 +8,9 @@ const App = () => {
   // State to track which repository is currently selected for detail view
 
   return (
-    <div className="min-h-screen">
+    <>
       <Header />
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto pt-16 mt-10">
         <Routes>
           <Route path='/' element={<RepoList />} />
 
@@ -20,7 +20,7 @@ const App = () => {
           <Route path='*' element={<NotFound />} />
         </Routes>
       </main>
-    </div>
+    </>
   )
 }
 
