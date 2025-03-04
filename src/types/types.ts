@@ -12,6 +12,7 @@ export interface Repository {
   homepage: string              // URL to the repository's homepage
   language: string | null       // Primary programming language, could be null
   created_at: string            // Creation date in ISO format
+  updated_at: string            // Last updated date in ISO format
   stargazers_count: number      // Number of stars
   forks_count: number           // Number of forks
   watchers_count: number        // Number of watchers

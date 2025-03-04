@@ -14,6 +14,7 @@ import StarEmoji from '../components/emoji/StarEmoji'
 import ForkEmoji from '../components/emoji/ForkEmoji'
 import LanguageEmoji from '../components/emoji/LanguageEmoji'
 import ExternalLinkCard from '../components/ExternalLinksCard'
+import { format, parseISO } from 'date-fns'
 
 const RepoDetail = () => {
   const { repoId } = useParams<{ repoId: string }>()
@@ -94,8 +95,12 @@ const RepoDetail = () => {
           <CardTitle className='text-2xl'>
             {selectedRepository.name}
           </CardTitle>
-          <CardDescription className='text-lg'>
-            {selectedRepository.description || "We've looked high and low, unfortunately it looks like there is no description."}
+          <CardDescription className='text-xs'>
+            <p className='text-lg'>{selectedRepository.description || "We've looked high and low, unfortunately it looks like there is no description."}</p>
+            <div className='mt-4'>
+              <p>Last Updated at: {format(parseISO(selectedRepository.updated_at), 'dd MMMM yyyy')}</p>
+              <p>Created at: {format(parseISO(selectedRepository.created_at), 'dd MMMM yyyy')}</p>
+            </div>
           </CardDescription>
         </CardHeader>
       </Card>

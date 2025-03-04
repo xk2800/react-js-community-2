@@ -13,8 +13,8 @@ import { parseISO, format } from 'date-fns'
 
 const RepoCard = ({ repo, onClick, counter }: RepoCardProps) => {
 
-  const date = parseISO(repo.created_at)
-  const formattedDate = format(date, 'MMMM dd, yyyy')
+  const date = parseISO(repo.updated_at)
+  const formattedDate = format(date, 'dd MMMM yyyy')
 
   return (
     <>
@@ -27,7 +27,7 @@ const RepoCard = ({ repo, onClick, counter }: RepoCardProps) => {
           <p className='text-sm'>{repo.language || 'Opps, I think there is no language for this'}</p>
         </CardContent>
         <CardFooter className='text-xs'>
-          Last updated: {formattedDate}
+          Last updated at: {formattedDate}
         </CardFooter>
       </Card>
     </>
