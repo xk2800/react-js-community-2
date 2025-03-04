@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { fetchRepositories, loadMoreRepositories } from '../features/repositories/repositoriesSlice'
 import { RootState } from '../store/rootReducer'
-import RepoCard from './RepoCard'
-import LoadingIndicator from './LoadingIndicator'
+import RepoCard from '../components/RepoCard'
+import LoadingIndicator from '../components/LoadingIndicator'
 import { Repository } from '../types/types'
-import SearchBar from './SearchBar'
+import SearchBar from '../components/SearchBar'
 
 const RepoList = () => {
   const navigate = useNavigate()
@@ -20,9 +20,14 @@ const RepoList = () => {
   } = useSelector((state: RootState) => state.repositories)
 
   const observer = useRef<IntersectionObserver | null>(null)
+
+  // Callback function to handle infinite scrolling
+  // Called when the last repository card is in view
   const lastRepoElementRef = useCallback((node: HTMLDivElement | null) => {
+    // Skipped if already loading or no more repositories to load
     if (loading || !hasMore) return
 
+    // Disconnect previous observer if it exists
     if (observer.current) observer.current.disconnect()
 
     observer.current = new IntersectionObserver(entries => {
@@ -36,6 +41,7 @@ const RepoList = () => {
 
   // Navigate to repository detail page
   const handleRepoSelect = (repo: Repository) => {
+    window.scrollTo(0, 0);
     navigate(`/repo/${repo.id}`)
   }
 
@@ -60,13 +66,7 @@ const RepoList = () => {
 
   return (
     <div>
-      <SearchBar />
-
-      {searchTerm && (
-        <h2 className="text-xl font-semibold mb-4">
-          Search results for: "{searchTerm}"
-        </h2>
-      )}
+      <SearchBar userSearchTerm={searchTerm} />
 
       {repositories.length === 0 && !loading ? (
         <div className="text-center py-10">
@@ -77,6 +77,7 @@ const RepoList = () => {
           {repositories.map((repo, index) => {
             if (repositories.length === index + 1) {
               return (
+                // Apply ref to the last repository card for infinite scrolling
                 <div ref={lastRepoElementRef} key={repo.id}>
                   <RepoCard
                     repo={repo}
@@ -87,6 +88,7 @@ const RepoList = () => {
               )
             } else {
               return (
+                // Regular repository card without ref
                 <RepoCard
                   key={repo.id}
                   repo={repo}

@@ -1,6 +1,6 @@
 import Header from './components/Header'
 import RepoList from './pages/RepoList'
-import RepoDetail from './components/RepoDetail'
+import RepoDetail from './pages/RepoDetail'
 import { Route, Routes } from 'react-router-dom'
 import NotFound from './pages/NotFound'
 

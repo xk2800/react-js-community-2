@@ -4,7 +4,7 @@ import { searchRepositories } from '../features/repositories/repositoriesSlice'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 
-const SearchBar = () => {
+const SearchBar = ({ userSearchTerm }: { userSearchTerm?: string }) => {
   const dispatch = useDispatch()
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -25,17 +25,25 @@ const SearchBar = () => {
   }
 
   return (
-    <form onSubmit={handleSearch} className="w-full md:w-3/12 mb-4">
-      <div className="relative">
-        <Label htmlFor='text' className='mb-2'>Search for repositories</Label>
-        <Input
-          placeholder="Enter your search term"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="focus-visible:ring-[#49f627]"
-        />
-      </div>
-    </form>
+    <div>
+      <form onSubmit={handleSearch} className="w-full md:w-3/12 mb-4">
+        <div className="relative">
+          <Label htmlFor='text' className='mb-2'>Search for repositories</Label>
+          <Input
+            placeholder="Enter your search term"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="focus-visible:ring-[#49f627]"
+          />
+        </div>
+      </form>
+
+      {userSearchTerm && (
+        <h2 className="text-xl font-semibold mb-4">
+          Search results for: "{userSearchTerm}"
+        </h2>
+      )}
+    </div>
   )
 }
 
