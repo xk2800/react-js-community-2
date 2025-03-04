@@ -24,7 +24,7 @@ const RepoCard = ({ repo, onClick, counter }: RepoCardProps) => {
           <CardDescription>{repo.description || 'No description available'}</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className='text-sm'>{repo.language || 'Opps, I think think there is no language for this'}</p>
+          <p className='text-sm'>{repo.language || 'Opps, I think there is no language for this'}</p>
         </CardContent>
         <CardFooter className='text-xs'>
           Last updated: {formattedDate}

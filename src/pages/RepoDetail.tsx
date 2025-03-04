@@ -134,7 +134,7 @@ const RepoDetail = () => {
               <LanguageEmoji isHovered={isHovered} /> Language
             </>
           )}
-          value={selectedRepository.language || 'Opps, I think think there is no language for this'}
+          value={selectedRepository.language || 'Opps, I think there is no language for this'}
         // className='max-md:col-span-2'
         />
       </div>
