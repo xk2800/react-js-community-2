@@ -10,7 +10,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <main className="container mx-auto pt-16 mt-10">
+      <main className="container mx-auto pt-16 mt-10 px-4">
         <Routes>
           <Route path='/' element={<RepoList />} />
 
