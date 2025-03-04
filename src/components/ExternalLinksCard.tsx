@@ -23,7 +23,7 @@ const ExternalLinkCard = ({ selectedRepository }: { selectedRepository: Selected
           <p className='text-xs'>psssss....But why would you even want to leave this cool website?</p>
         </CardDescription>
       </CardHeader>
-      <CardFooter className='grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4'>
+      <CardFooter className='grid grid-cols-1 md:grid-cols-4 xl:grid-cols-6 gap-4'>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
